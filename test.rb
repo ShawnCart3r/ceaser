@@ -1,27 +1,20 @@
-def caesar_cipher(string, shift)
-  shift = shift % 26  # Ensure shift remains within the alphabet range
+def substrings(word, dictionary)
+  word = word.downcase
+  result = Hash.new(0)
 
-  encrypted_text = string.chars.map do |char|  
-    if char.match?(/[A-Za-z]/)  
-      base = char.ord < 91 ? 'A'.ord : 'a'.ord  
-      ((char.ord - base + shift) % 26 + base).chr
-    else
-      char  
-    end
-  end.join  # Join array back into a string
+  dictionary.each do |substring|
+    matches = word.scan(/#{substring}/i).count
+    result[substring] += matches if matches > 0
+  end
 
-  encrypted_text  # Return the encrypted text
+  result
 end
 
-# Get user input
-puts "Enter the message you want to encrypt:"
-input_string = gets.chomp
+# Example usage
+dictionary = ["below","down","go","going","horn","how","howdy","it","i","low","own","part","partner","sit"]
 
-puts "Enter the shift number (positive for encrypt, negative for decrypt):"
-shift_number = gets.chomp.to_i  # Convert input to integer
+puts substrings("below", dictionary) 
+# => { "below" => 1, "low" => 1 }
 
-# Encrypt the message
-encrypted_word = caesar_cipher(input_string, shift_number)
-
-# Display the result
-puts "The encrypted message: #{encrypted_word}"
+puts substrings("Howdy partner, sit down! How's it going?", dictionary)
+# => { "down" => 1, "go" => 1, "going" => 1, "how" => 2, "howdy" => 1, "it" => 2, "i" => 3, "part" => 1, "partner" => 1, "sit" => 1 }
