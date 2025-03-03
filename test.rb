@@ -1,22 +1,21 @@
-def stock_picker(prices)
-  max_profit = 0
-  best_days = []
+def bubble_sort(array)
+  n = array.length
+  loop do
+    swapped = false
 
-  prices.each_with_index do |buy_price, buy_day|
-    (buy_day + 1...prices.length).each do |sell_day|
-      sell_price = prices[sell_day]
-      profit = sell_price - buy_price
-
-      if profit > max_profit
-        max_profit = profit
-        best_days = [buy_day, sell_day]
+    (n - 1).times do |i|
+      if array[i] > array[i + 1]
+        array[i], array[i + 1] = array[i + 1], array[i]  # Swap elements
+        swapped = true
       end
     end
+
+    break unless swapped  # If no swaps were made, array is sorted
   end
 
-  best_days
+  array
 end
 
-# Example usage
-puts stock_picker([17,3,6,9,15,8,6,1,10]).inspect
-# Output: [1, 4] (buy on day 1 at $3, sell on day 4 at $15 for a $12 profit)
+# Example usage:
+puts bubble_sort([4,3,78,2,0,2]).inspect
+# Output: [0, 2, 2, 3, 4, 78]
