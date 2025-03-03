@@ -1,20 +1,22 @@
-def substrings(word, dictionary)
-  word = word.downcase
-  result = Hash.new(0)
+def stock_picker(prices)
+  max_profit = 0
+  best_days = []
 
-  dictionary.each do |substring|
-    matches = word.scan(/#{substring}/i).count
-    result[substring] += matches if matches > 0
+  prices.each_with_index do |buy_price, buy_day|
+    (buy_day + 1...prices.length).each do |sell_day|
+      sell_price = prices[sell_day]
+      profit = sell_price - buy_price
+
+      if profit > max_profit
+        max_profit = profit
+        best_days = [buy_day, sell_day]
+      end
+    end
   end
 
-  result
+  best_days
 end
 
 # Example usage
-dictionary = ["below","down","go","going","horn","how","howdy","it","i","low","own","part","partner","sit"]
-
-puts substrings("below", dictionary) 
-# => { "below" => 1, "low" => 1 }
-
-puts substrings("Howdy partner, sit down! How's it going?", dictionary)
-# => { "down" => 1, "go" => 1, "going" => 1, "how" => 2, "howdy" => 1, "it" => 2, "i" => 3, "part" => 1, "partner" => 1, "sit" => 1 }
+puts stock_picker([17,3,6,9,15,8,6,1,10]).inspect
+# Output: [1, 4] (buy on day 1 at $3, sell on day 4 at $15 for a $12 profit)
